@@ -39,6 +39,7 @@ config_httpd(){
 config_vh(){
   sed -Ei "s|DOMAIN|${DOMAIN}|g" ${TMP_DIR}/vh-conf.xml
   sed -Ei "s|VH_ROOT|${VH_ROOT}|g" ${TMP_DIR}/vh-conf.xml
+  sed -Ei "s|PHP_VER|${PHP_VER}|g" ${TMP_DIR}/vh-conf.xml
   mv ${TMP_DIR}/vh-conf.xml ${SERVER_DIR}/conf/${DOMAIN}.xml
 }
 
