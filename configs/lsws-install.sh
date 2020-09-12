@@ -44,8 +44,11 @@ config_vh(){
 
 config_template(){
   sed -Ei "s|LSAPI_NAME|${PHP_VER}|g" ${TMP_DIR}/docker.xml
-  sed -Ei "s|DOMAIN|${DOMAIN}|g" ${TMP_DIR}/docker.xml
-  sed -Ei "s|VH_ROOT|${VH_ROOT}|g" ${TMP_DIR}/docker.xml
+  sed -Ei "s|DOMAIN|${DOMAIN}|g"   ${TMP_DIR}/docker.xml
+  sed -Eir "s|VH_ROOT|${VH_ROOT}|g" ${TMP_DIR}/docker.xml
+  if [[ ${PHP_VER} =~ ^lsphp[5-9]{1}[3-9]{1} ]]; then
+	  sed -Ei "s|PHP_VER|${PHP_VER}|g" ${TMP_DIR}/docker.xml
+  fi
   mv ${TMP_DIR}/docker.xml ${SERVER_DIR}/conf/templates/docker.xml
 }
 
@@ -100,7 +103,7 @@ set_vh_docroot(){
     if [ -d ${VH_ROOT}/${DOMAIN}/html ]; then
 	    VH_ROOT="${VH_ROOT}/${DOMAIN}"
         VH_DOC_ROOT="${VH_ROOT}/${DOMAIN}/html"
-        chown -R 33:33 ${VH_DOC_ROOT}/
+        chown -R 1000:1000 ${VH_DOC_ROOT}/
 		WP_CONST_CONF="${VH_DOC_ROOT}/wp-content/plugins/litespeed-cache/data/const.default.ini"
 	elif
 		[ -d  ${VH_ROOT}/${DOMAIN} ]; then
@@ -108,7 +111,7 @@ set_vh_docroot(){
                 VH_DOC_ROOT="${VH_ROOT}/${DOMAIN}/html"
 		echo "VH root & VH itself exist, so we will create required doctroot - html"
 		mkdir -p ${VH_ROOT}/${DOMAIN}/{html,certs,cgi-bin,conf}
-    chown -R 33:33 ${VH_DOC_ROOT}/
+    chown -R 1000:1000 ${VH_DOC_ROOT}/
     WP_CONST_CONF="${VH_DOC_ROOT}/wp-content/plugins/litespeed-cache/data/const.default.ini"
 
 	elif
@@ -116,7 +119,7 @@ set_vh_docroot(){
             echo "Only VH root exists, will create VH dir & docroot, etc"
 	    mkdir -p ${VH_ROOT}/${DOMAIN}/{html,certs,cgi-bin,conf}
             VH_DOC_ROOT="${VH_ROOT}/${DOMAIN}/html"
-            chown -R 33:33 ${VH_DOC_ROOT}/
+            chown -R 1000:1000 ${VH_DOC_ROOT}/
             WP_CONST_CONF="${VH_DOC_ROOT}/wp-content/plugins/litespeed-cache/data/const.default.ini"
 	else
 	    echo "${VH_ROOT}/${DOMAIN}/html & ${VH_ROOT} itself do not exist, please add domain first! Abort!"
