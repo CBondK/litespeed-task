@@ -1,15 +1,14 @@
 #!/bin/bash
 set -o allexport; source ../.env
-######### Dynamic vars, can be changed via .env ##########
-[ -z "${SERVER_DIR}"  ] && SERVER_DIR='/usr/local/lsws'###
-[ -z "${LSWS_VER}"    ] && LSWS_VER='5.0'              ###
-[ -z "${LSWS_SUBVER}" ] && LSWS_SUBVER='5.4.9'         ###
-[ -z "${DOMAIN}"      ] && DOMAIN='localhost'          ###
-[ -z "${VH_ROOT}"     ] && VH_ROOT='/var/www/vhosts'   ###
-[ -z "${PHP_VER}"     ] && PHP_VER='lsphp73'           ###
-[ -z "${PHP_VER}"     ] && PHP_VER='lsphp73'           ###
-[ -z "${ALLOWED_SUB}" ] && ALLOWED_SUB='0.0.0.0/0'     ###
-##########################################################
+######### Dynamic vars, can be changed via .env ########№##
+[ -z "${SERVER_DIR}"  ] && SERVER_DIR='/usr/local/lsws' ###
+[ -z "${LSWS_VER}"    ] && LSWS_VER='5.0'               ###
+[ -z "${LSWS_SUBVER}" ] && LSWS_SUBVER='5.4.9'          ###
+[ -z "${DOMAIN}"      ] && DOMAIN='localhost'           ###
+[ -z "${VH_ROOT}"     ] && VH_ROOT='/var/www/vhosts'    ###
+[ -z "${PHP_VER}"     ] && PHP_VER='lsphp73'            ###
+[ -z "${ALLOWED_SUB}" ] && ALLOWED_SUB='0.0.0.0/0'      ###
+#######################################################№###
 
 TMP_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 DIR_REM=${TMP_DIR}
@@ -118,4 +117,3 @@ config_vh
 config_template
 set_vh_docroot
 restart_srv
-
