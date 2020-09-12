@@ -1,6 +1,6 @@
 #!/bin/bash
 set -o allexport; source ../.env
-######### Dynamic vars, can be changed via .env ###########
+######### Dynamic vars, can be changed via .env ########№##
 [ -z "${SERVER_DIR}"  ] && SERVER_DIR='/usr/local/lsws' ###
 [ -z "${LSWS_VER}"    ] && LSWS_VER='5.0'               ###
 [ -z "${LSWS_SUBVER}" ] && LSWS_SUBVER='5.4.9'          ###
@@ -8,7 +8,7 @@ set -o allexport; source ../.env
 [ -z "${VH_ROOT}"     ] && VH_ROOT='/var/www/vhosts'    ###
 [ -z "${PHP_VER}"     ] && PHP_VER='lsphp73'            ###
 [ -z "${ALLOWED_SUB}" ] && ALLOWED_SUB='0.0.0.0/0'      ###
-###########################################################
+#######################################################№###
 
 TMP_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 DIR_REM=${TMP_DIR}
@@ -51,16 +51,31 @@ admin_creds(){
 
 NOCOLOR='\033[0m'
 RED='\033[0;31m'
-  if [ -z "${ADMIN_USER}" ]; then
+  if [ -z "${ADMIN_USER}" ]  && [ -z "${ADMIN_PASS}" ]; then
+    ADMIN_PASS=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 7 | head -n 1)
     echo && echo
-  	echo -e "${RED}The default admin login username was set ---> admin${NOCOLOR}"
+    echo -e "${RED}Since the Admin username and pass were not pre-defined, the random one's generated ---> ${ADMIN_PASS}${NOCOLOR}"
+    reset_details "admin" ${ADMIN_PASS}
+    
+  elif [ ! -z "${ADMIN_USER}" ] && [ -z "${ADMIN_PASS}" ]; then
+    ADMIN_PASS=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 7 | head -n 1)
+    echo && echo
+    echo -e "${RED}Admin username -----> ${ADMIN_USER}, Admin Pass (generated automatically) -----> ${ADMIN_PASS}${NOCOLOR}"
+    reset_details ${ADMIN_USER} ${ADMIN_PASS}
+  elif  [ -z "${ADMIN_USER}" ] && [ ! -z "${ADMIN_PASS}" ]; then
+      if [[ ${ADMIN_PASS} -ge 8 ]]; then
+      reset_details "admin" ${ADMIN_PASS}
+      echo && echo
+      echo -e "${RED}Admin username was set automatically -----> admin, Admin Pass -----> ${ADMIN_PASS}${NOCOLOR}"
+      else
+        echo -e "${RED} Password too short! exiting ${NOCOLOR}"
+        exit 1
+      fi
+  else
+     echo && echo
+     echo -e "${RED}The admin username -----> ${ADMIN_USER}, Admin Pass -----> ${ADMIN_PASS}${NOCOLOR}"
+     reset_details ${ADMIN_USER} ${ADMIN_PASS}
   fi
-  	if [ -z "$ADMIN_PASS" ]; then
-  	       ADMIN_PASS=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 7 | head -n 1)
-          echo && echo
-          echo -e "${RED}Since the Admin pass was not pre-defined, the random one's generated ---> ${ADMIN_PASS}${NOCOLOR}"
-  	echo && echo
-   	fi
 }
 
 lsws_download(){
@@ -105,13 +120,17 @@ set_vh_docroot(){
 	fi	
 }
 
-cleanup(){
-  rm -rf ${DIR_REM}/
+reset_details(){
+  ENCRYPT_PASS=`"${SERVER_DIR}/admin/fcgi-bin/admin_php5" -q "${SERVER_DIR}/admin/misc/htpasswd.php" ${2}`
+  echo "$1:${ENCRYPT_PASS}" > "${SERVER_DIR}/admin/conf/htpasswd"
 }
+
+
+
+
 #############################
 #            Main           #
 #############################
-admin_creds
 lsws_download
 lsws-install
 configure_lsws_conf
@@ -119,5 +138,5 @@ config_httpd
 config_vh
 config_template
 set_vh_docroot
+admin_creds
 restart_srv
-cleanup
