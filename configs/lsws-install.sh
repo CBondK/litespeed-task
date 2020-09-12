@@ -8,7 +8,7 @@ set -o allexport; source ../.env
 [ -z "${VH_ROOT}"     ] && VH_ROOT='/var/www/vhosts'    ###
 [ -z "${PHP_VER}"     ] && PHP_VER='lsphp73'            ###
 [ -z "${ALLOWED_SUB}" ] && ALLOWED_SUB='0.0.0.0/0'      ###
-[ -z "${ADMIN_PASS}"  ] && ADMIN_PASS='12345678'        ###
+[ -z "${ADMIN_PASS}"  ] && ADMIN_PASS='dummy_pass'      ###
 ###########################################################
 
 TMP_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
@@ -53,14 +53,14 @@ admin_creds(){
 
 NOCOLOR='\033[0m'
 RED='\033[0;31m'
-ADMIN_PASS=''
-  if [ -z "${ADMIN_USER}" ]  && [ -z "${ADMIN_PASS}" ]; then
+#ADMIN_PASS=''
+  if [ -z "${ADMIN_USER}" ]  && [ ${ADMIN_PASS} = "dummy_pass"]; then
     ADMIN_PASS=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 7 | head -n 1)
     echo && echo
     echo -e "${RED}Since the Admin username and pass were not pre-defined, the random one's generated ---> ${ADMIN_PASS}${NOCOLOR}"
     reset_details "admin" ${ADMIN_PASS}
 
-  elif [ ! -z "${ADMIN_USER}" ] && [ -z "${ADMIN_PASS}" ]; then
+  elif [ ! -z "${ADMIN_USER}" ] && [ ${ADMIN_PASS} = "dummy_pass" ]; then
     ADMIN_PASS=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 7 | head -n 1)
     echo && echo
     echo -e "${RED}Admin username -----> ${ADMIN_USER}, Admin Pass (generated automatically) -----> ${ADMIN_PASS}${NOCOLOR}"
