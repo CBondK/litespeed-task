@@ -1,16 +1,20 @@
 #!/bin/bash
 set -o allexport; source ../.env
-SERVER_DIR='/usr/local/lsws'
-[ -z "${LSWS_VER}"    ] && LSWS_VER='5.0'
-[ -z "${LSWS_SUBVER}" ] && LSWS_SUBVER='5.4.9'
-[ -z "${DOMAIN}"      ] && DOMAIN='localhost'
-[ -z "${VH_ROOT}"     ] && VH_ROOT='/var/www/vhosts'
-[ -z "${PHP_VER}"     ] && PHP_VER='lsphp73'
-#####################
+######### Dynamic vars, can be changed via .env ##########
+[ -z "${SERVER_DIR}"  ] && SERVER_DIR='/usr/local/lsws'###
+[ -z "${LSWS_VER}"    ] && LSWS_VER='5.0'              ###
+[ -z "${LSWS_SUBVER}" ] && LSWS_SUBVER='5.4.9'         ###
+[ -z "${DOMAIN}"      ] && DOMAIN='localhost'          ###
+[ -z "${VH_ROOT}"     ] && VH_ROOT='/var/www/vhosts'   ###
+[ -z "${PHP_VER}"     ] && PHP_VER='lsphp73'           ###
+[ -z "${PHP_VER}"     ] && PHP_VER='lsphp73'           ###
+[ -z "${ALLOWED_SUB}" ] && ALLOWED_SUB='0.0.0.0/0'     ###
+##########################################################
+
 TMP_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+DIR_REM=${TMP_DIR}
 
-
-
+# Functions declaration
 restart_srv(){
 chown -R nobody:nogroup ${SERVER_DIR}/
 ${SERVER_DIR}/bin/lswsctrl restart
@@ -24,6 +28,11 @@ configure_lsws_conf(){
   sed -Ei "s|VH_ROOT|${VH_ROOT}|g" ${TMP_DIR}/httpd_conf.xml
   mv ${TMP_DIR}/httpd_conf.xml  ${SERVER_DIR}/conf/httpd_config.xml
   fi
+}
+
+config_httpd(){
+  sed -Ei "s|ALLOWED_SUB|${ALLOWED_SUB}|g" ${TMP_DIR}/httpd.conf
+  mv ${TMP_DIR}/httpd.conf ${SERVER_DIR}/conf/httpd.conf
 }
 
 config_vh(){
@@ -97,13 +106,16 @@ set_vh_docroot(){
 	fi	
 }
 
+#############################
+#            Main           #
+#############################
 admin_creds
 lsws_download
 lsws-install
 configure_lsws_conf
+config_httpd
 config_vh
 config_template
 set_vh_docroot
 restart_srv
-
 
