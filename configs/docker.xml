@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<virtualHostTemplate>
+  <vhRoot>$SERVER_ROOT/DOMAIN/</vhRoot>
+  <configFile>$SERVER_ROOT/conf/DOMAIN.xml</configFile>
+  <allowSymbolLink>1</allowSymbolLink>
+  <enableScript>1</enableScript>
+  <restrained>1</restrained>
+  <setUIDMode>0</setUIDMode>
+  <chrootMode>0</chrootMode>
+  <virtualHostConfig>
+    <docRoot>VH_ROOT/DOMAIN/html/</docRoot>
+    <enableGzip>1</enableGzip>
+    <logging>
+      <log>
+        <useServer>1</useServer>
+      </log>
+      <accessLog>
+        <useServer>0</useServer>
+        <fileName>$SERVER_ROOT/logs/DOMAIN.access.log</fileName>
+        <rollingSize>100M</rollingSize>
+        <keepDays>30</keepDays>
+        <compressArchive>1</compressArchive>
+      </accessLog>
+    </logging>
+    <index>
+      <useServer>0</useServer>
+      <indexFiles>index.html,index.php</indexFiles>
+      <autoIndex>0</autoIndex>
+      <autoIndexURI>/_autoindex/default.php</autoIndexURI>
+    </index>
+    <scriptHandlerList>
+      <scriptHandler>
+        <suffix>php</suffix>
+        <type>lsapi</type>
+        <handler>PHP_VER</handler>
+      </scriptHandler>
+    </scriptHandlerList>
+    <htAccess>
+      <allowOverride>0</allowOverride>
+      <accessFileName>.htaccess</accessFileName>
+    </htAccess>
+    <expires>
+      <enableExpires>1</enableExpires>
+    </expires>
+    <apacheConf>&lt;IfModule Litespeed&gt;
+WordPressProtect off
+&lt;/IfModule&gt;</apacheConf>
+    <security>
+      <hotlinkCtrl>
+        <enableHotlinkCtrl>0</enableHotlinkCtrl>
+        <suffixes>gif, jpeg, jpg</suffixes>
+        <allowDirectAccess>1</allowDirectAccess>
+        <onlySelf>1</onlySelf>
+      </hotlinkCtrl>
+      <accessControl>
+        <allow>*</allow>
+      </accessControl>
+    </security>
+    <contextList>
+      <context>
+        <type>cgi</type>
+        <uri>/cgi-bin/</uri>
+        <location>VH_ROOT/DOMAIN/cgi-bin/</location>
+      </context>
+    </contextList>
+    <rewrite>
+      <enable>0</enable>
+      <logLevel>0</logLevel>
+      <rules>RewriteCond %{HTTP_USER_AGENT}  ^NameOfBadRobot
+  RewriteRule ^/nospider/         -   [F]</rules>
+    </rewrite>
+    <frontPage>
+      <enable>0</enable>
+      <disableAdmin>0</disableAdmin>
+    </frontPage>
+  </virtualHostConfig>
+</virtualHostTemplate>
+
+

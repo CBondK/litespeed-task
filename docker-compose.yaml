@@ -1,0 +1,36 @@
+version: '3.7'
+services:
+   mysql:
+     image: mariadb:10.5.5
+     command: --max_allowed_packet=256M --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+     ports:
+     - "3306:3306"
+     networks:
+     - backend  
+     environment:
+       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+       MYSQL_DATABASE: ${MYSQL_DATABASE}
+       MYSQL_USER: ${MYSQL_USER}
+       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+   litespeed-entr-oob:
+     build: 
+       context: .
+     env_file:
+     - .env
+     ports:
+     - 80:80
+     - 443:443
+     - 443:443/udp
+     - 7080:7080
+     networks:
+     - backend
+     restart: always
+     depends_on: 
+       - mysql
+
+
+networks:
+  backend:
+    driver: bridge
+
+
