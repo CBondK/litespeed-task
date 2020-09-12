@@ -20,6 +20,13 @@
     <autoIndex>0</autoIndex>
     <autoIndexURI>/_autoindex/default.php</autoIndexURI>
   </index>
+    <scriptHandlerList>
+    <scriptHandler>
+      <suffix>php</suffix>
+      <type>lsapi</type>
+      <handler>PHP_VER</handler>
+    </scriptHandler>
+  </scriptHandlerList>
   <htAccess>
     <allowOverride>31</allowOverride>
     <accessFileName>.htaccess</accessFileName>
