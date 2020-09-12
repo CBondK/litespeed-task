@@ -21,7 +21,7 @@ ALLOWED_SUB='0.0.0.0/0'
 ```
 
 ### MySQL database
-In order to get the webserver working properly, it is required to deploy the database server. In out case, there is the mariadb:10.5.5 Docker image used. Using docker-compose.yml will also create a volume for the database which allows to save the Wordpress database data after container recreation.
+In order to get the webserver working properly, it is required to deploy the database server. In our case, there is the mariadb:10.5.5 Docker image used. Using docker-compose.yml will also create a volume for the database which allows saving the Wordpress database data after container recreation.
 
 ### Wordpress
 
@@ -32,7 +32,7 @@ The built image also contains installed Wordpress as well as the required LiteSp
 There are two scenarios of the deployment:
 
 1. Standalone Docker image built via a separate Dockerfile.
-2. Using docker-compose in order to put the the stack together automatically.
+2. Using docker-compose in order to put the stack together automatically.
 
 __Please note that for successful deployment, it will be required to create the ".env" file with the obligatory variables.__
 
@@ -50,7 +50,7 @@ LSWS_VER=5.0
 LSWS_SUBVER=5.4.9
 ```
 
-This will allow to extend the available options for deployment and will give us a morer dynamic provisioning.
+This will allow extending the available options for deployment and will give us more dynamic provisioning.
 
 In case the optional values are not explicitly set, the default ones will be generated. The default Admin password will be printed during image provisioning.
 
@@ -72,15 +72,13 @@ ____Please note that it is obligatory to place the trial.key to the directory wh
 
 ```
 ----> git clone https://github.com/CBondK/litespeed-task.git && cd litespeed-task
-# place .env & trial.key to litespeed-task dir
-----> source .env
-#Please note that there should be a MySQL server up and running with the correct connection details specified in .env
-----> docker build . -t lsws-box:1.5 --build-arg PHP_VER=$PHP_VER
-#If the PHP version is specified in .env, it will be assigned via --build-arg. If not, default "lsphp73" will be used.
-----> docker run -d -p 443:443 -p 80:80 -p 8088:8088 -p 7080:7080  lsws-box:1.5
+# firsty, please place .env & trial.key to litespeed-task dir 
+----> cd litespeed-task 
+# build args will be picked up automatically docker-compose.yaml
+----> docker-compose up -d
 ```
 
 
-#####The deployment process has been tested on Google Cloud platform and local host machine. 
+#####The deployment process has been tested on the Google Cloud platform and local host machine. 
 
 Reference: https://www.litespeedtech.com/docs/webserver
