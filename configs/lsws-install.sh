@@ -53,8 +53,7 @@ admin_creds(){
 
 NOCOLOR='\033[0m'
 RED='\033[0;31m'
-#ADMIN_PASS=''
-  if [ -z "${ADMIN_USER}" ]  && [ ${ADMIN_PASS} = "dummy_pass"]; then
+  if [ -z "${ADMIN_USER}" ]  && [ ${ADMIN_PASS} = "dummy_pass" ]; then
     ADMIN_PASS=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 7 | head -n 1)
     echo && echo
     echo -e "${RED}Since the Admin username and pass were not pre-defined, the random one's generated ---> ${ADMIN_PASS}${NOCOLOR}"
