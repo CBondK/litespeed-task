@@ -79,6 +79,6 @@ ____Please note that it is obligatory to place the trial.key to the directory wh
 ```
 
 
-#####The deployment process has been tested on the Google Cloud platform and local host machine. 
+*The deployment process has been tested on the Google Cloud platform and local host machine.*
 
 Reference: https://www.litespeedtech.com/docs/webserver
