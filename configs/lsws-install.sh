@@ -1,6 +1,6 @@
 #!/bin/bash
 set -o allexport; source ../.env
-######### Dynamic vars, can be changed via .env ########№##
+######### Dynamic vars, can be changed via .env ###########
 [ -z "${SERVER_DIR}"  ] && SERVER_DIR='/usr/local/lsws' ###
 [ -z "${LSWS_VER}"    ] && LSWS_VER='5.0'               ###
 [ -z "${LSWS_SUBVER}" ] && LSWS_SUBVER='5.4.9'          ###
@@ -8,7 +8,8 @@ set -o allexport; source ../.env
 [ -z "${VH_ROOT}"     ] && VH_ROOT='/var/www/vhosts'    ###
 [ -z "${PHP_VER}"     ] && PHP_VER='lsphp73'            ###
 [ -z "${ALLOWED_SUB}" ] && ALLOWED_SUB='0.0.0.0/0'      ###
-#######################################################№###
+[ -z "${ADMIN_PASS}"  ] && ADMIN_PASS='12345678'        ###
+###########################################################
 
 TMP_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 DIR_REM=${TMP_DIR}
@@ -51,12 +52,13 @@ admin_creds(){
 
 NOCOLOR='\033[0m'
 RED='\033[0;31m'
+ADMIN_PASS=''
   if [ -z "${ADMIN_USER}" ]  && [ -z "${ADMIN_PASS}" ]; then
     ADMIN_PASS=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 7 | head -n 1)
     echo && echo
     echo -e "${RED}Since the Admin username and pass were not pre-defined, the random one's generated ---> ${ADMIN_PASS}${NOCOLOR}"
     reset_details "admin" ${ADMIN_PASS}
-    
+
   elif [ ! -z "${ADMIN_USER}" ] && [ -z "${ADMIN_PASS}" ]; then
     ADMIN_PASS=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 7 | head -n 1)
     echo && echo
@@ -98,31 +100,35 @@ set_vh_docroot(){
     if [ -d ${VH_ROOT}/${DOMAIN}/html ]; then
 	    VH_ROOT="${VH_ROOT}/${DOMAIN}"
         VH_DOC_ROOT="${VH_ROOT}/${DOMAIN}/html"
+        chown -R 33:33 ${VH_DOC_ROOT}/
 		WP_CONST_CONF="${VH_DOC_ROOT}/wp-content/plugins/litespeed-cache/data/const.default.ini"
-	elif    
+	elif
 		[ -d  ${VH_ROOT}/${DOMAIN} ]; then
                 VH_ROOT="${VH_ROOT}/${DOMAIN}"
-                VH_DOC_ROOT="${VH_ROOT}/${DOMAIN}/html"	        	
+                VH_DOC_ROOT="${VH_ROOT}/${DOMAIN}/html"
 		echo "VH root & VH itself exist, so we will create required doctroot - html"
-		mkdir -p ${VH_ROOT}/${DOMAIN}/{html,certs,cgi-bin,conf}    
-                WP_CONST_CONF="${VH_DOC_ROOT}/wp-content/plugins/litespeed-cache/data/const.default.ini"
-      
+		mkdir -p ${VH_ROOT}/${DOMAIN}/{html,certs,cgi-bin,conf}
+    chown -R 33:33 ${VH_DOC_ROOT}/
+    WP_CONST_CONF="${VH_DOC_ROOT}/wp-content/plugins/litespeed-cache/data/const.default.ini"
+
 	elif
 		[ -d ${VH_ROOT} ]; then
             echo "Only VH root exists, will create VH dir & docroot, etc"
-	    mkdir -p ${VH_ROOT}/${DOMAIN}/{html,certs,cgi-bin,conf}    
+	    mkdir -p ${VH_ROOT}/${DOMAIN}/{html,certs,cgi-bin,conf}
             VH_ROOT="${VH_ROOT}/${DOMAIN}"
             VH_DOC_ROOT="${VH_ROOT}/${DOMAIN}/html"
+            chown -R 33:33 ${VH_DOC_ROOT}/
             WP_CONST_CONF="${VH_DOC_ROOT}/wp-content/plugins/litespeed-cache/data/const.default.ini"
 	else
 	    echo "${VH_ROOT}/${DOMAIN}/html & ${VH_ROOT} itself do not exist, please add domain first! Abort!"
 		exit 1
-	fi	
+	fi
 }
 
 reset_details(){
   ENCRYPT_PASS=`"${SERVER_DIR}/admin/fcgi-bin/admin_php5" -q "${SERVER_DIR}/admin/misc/htpasswd.php" ${2}`
   echo "$1:${ENCRYPT_PASS}" > "${SERVER_DIR}/admin/conf/htpasswd"
+  echo "$1:${ENCRYPT_PASS}" > "${SERVER_DIR}/admin/htpasswds/status"
 }
 
 
@@ -140,3 +146,4 @@ config_template
 set_vh_docroot
 admin_creds
 restart_srv
+

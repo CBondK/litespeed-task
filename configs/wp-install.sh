@@ -2,9 +2,8 @@
 set -o allexport; source ../.env
 
 [ -z "${VH_ROOT}"     ] && VH_ROOT='/var/www/vhosts'
-#VH_DOC_ROOT='/usr/local/lsws'
 [ -z "$DOMAIN"        ] && DOMAIN='localhost'
-VH_DOC_ROOT="${VH_ROOT}/${DOMAIN}"
+VH_DOC_ROOT="${VH_ROOT}/${DOMAIN}/html"
 WP_CONST_CONF="${VH_DOC_ROOT}/wp-content/plugins/litespeed-cache/data/const.default.ini"
 DB_HOST='mysql'
 PLUGINLIST="litespeed-cache.zip"
@@ -503,11 +502,6 @@ preinstall_wordpress(){
 }
 
 
-change_owner(){
-	    chown -R ${WWW_UID}:${WWW_GID} ${VH_DOC_ROOT}
-}
-
-
 
 install_wp(){
 
@@ -517,6 +511,10 @@ rm latest.tar.gz
 
 }
 
+fix_perms(){
+	chown -R 33:33 ${VH_ROOT}/${DOMAIN}/
+	${SERVER_DIR}/bin/lswsctrl restart
+}
 main(){
 
 
@@ -533,7 +531,7 @@ main(){
 	        prin "Adjusting WP litespeed-cache plugin"
 		set_lscache
 		prin "Checking perms"
-		change_owner
+		fix_perms
 		exit 0
 
 }
