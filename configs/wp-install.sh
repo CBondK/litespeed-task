@@ -513,7 +513,7 @@ rm latest.tar.gz
 }
 
 fix_perms(){
-	chown -R 1000:1000 ${VH_ROOT}/${DOMAIN}/
+	chown -R nobody:nogroup ${VH_ROOT}/${DOMAIN}/
 	[ -f ${SERVER_DIR}/conf/trial.key ] && rm -f ${SERVER_DIR}/conf/trial.key
 
 	${SERVER_DIR}/bin/lshttpd -t &>/dev/null
