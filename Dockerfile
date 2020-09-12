@@ -18,6 +18,7 @@ RUN wget -O /etc/apt/trusted.gpg.d/lst_repo.gpg http://rpms.litespeedtech.com/de
 RUN apt-get install mysql-client $PHP_VER $PHP_VER-common $PHP_VER-mysql $PHP_VER-opcache            \
     $PHP_VER-curl $PHP_VER-json $PHP_VER-imagick $PHP_VER-redis $PHP_VER-memcached $PHP_VER-intl -y
 
+EXPOSE 7080 80 443
 
 COPY . .
 
