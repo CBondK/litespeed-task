@@ -26,6 +26,7 @@ configure_lsws_conf(){
   sed -Ei "s|LSAPI_NAME|${PHP_VER}|g" ${TMP_DIR}/httpd_conf.xml
   sed -Ei "s|DOMAIN|${DOMAIN}|g" ${TMP_DIR}/httpd_conf.xml
   sed -Ei "s|VH_ROOT|${VH_ROOT}|g" ${TMP_DIR}/httpd_conf.xml
+  sed -Ei "s|LSAPI_NAME|${PHP_VER}|g" ${TMP_DIR}/httpd_conf.xml
   mv ${TMP_DIR}/httpd_conf.xml  ${SERVER_DIR}/conf/httpd_config.xml
   fi
 }
@@ -115,7 +116,6 @@ set_vh_docroot(){
 		[ -d ${VH_ROOT} ]; then
             echo "Only VH root exists, will create VH dir & docroot, etc"
 	    mkdir -p ${VH_ROOT}/${DOMAIN}/{html,certs,cgi-bin,conf}
-            VH_ROOT="${VH_ROOT}/${DOMAIN}"
             VH_DOC_ROOT="${VH_ROOT}/${DOMAIN}/html"
             chown -R 33:33 ${VH_DOC_ROOT}/
             WP_CONST_CONF="${VH_DOC_ROOT}/wp-content/plugins/litespeed-cache/data/const.default.ini"
@@ -146,4 +146,3 @@ config_template
 set_vh_docroot
 admin_creds
 restart_srv
-
