@@ -105,9 +105,6 @@ set_vh_docroot(){
 	fi	
 }
 
-cleanup(){
-  rm -rf ${DIR_REM}/
-}
 #############################
 #            Main           #
 #############################
@@ -120,4 +117,3 @@ config_vh
 config_template
 set_vh_docroot
 restart_srv
-cleanup

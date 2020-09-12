@@ -19,8 +19,7 @@ RUN apt-get install mysql-client $PHP_VER $PHP_VER-common $PHP_VER-mysql $PHP_VE
     $PHP_VER-curl $PHP_VER-json $PHP_VER-imagick $PHP_VER-redis $PHP_VER-memcached $PHP_VER-intl -y
 
 
-COPY . /lsws-installation
-WORKDIR /lsws-installation
+COPY . .
 
 RUN chmod +x ./configs/lsws-install.sh && bash ./configs/lsws-install.sh 
 RUN chmod +x ./configs/wp-install.sh   && bash ./configs/wp-install.sh
