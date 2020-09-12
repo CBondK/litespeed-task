@@ -3,6 +3,7 @@ set -o allexport; source ../.env
 
 [ -z "${VH_ROOT}"     ] && VH_ROOT='/var/www/vhosts'
 [ -z "$DOMAIN"        ] && DOMAIN='localhost'
+[ -z "${SERVER_DIR}"  ] && SERVER_DIR='/usr/local/lsws'
 VH_DOC_ROOT="${VH_ROOT}/${DOMAIN}/html"
 WP_CONST_CONF="${VH_DOC_ROOT}/wp-content/plugins/litespeed-cache/data/const.default.ini"
 DB_HOST='mysql'
@@ -538,4 +539,3 @@ main(){
 
 
 main
-
