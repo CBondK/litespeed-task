@@ -1,6 +1,6 @@
 #!/bin/bash
 set -o allexport; source ../.env
-######### Dynamic vars, can be changed via .env ########№##
+######### Dynamic vars, can be changed via .env ###########
 [ -z "${SERVER_DIR}"  ] && SERVER_DIR='/usr/local/lsws' ###
 [ -z "${LSWS_VER}"    ] && LSWS_VER='5.0'               ###
 [ -z "${LSWS_SUBVER}" ] && LSWS_SUBVER='5.4.9'          ###
@@ -8,7 +8,7 @@ set -o allexport; source ../.env
 [ -z "${VH_ROOT}"     ] && VH_ROOT='/var/www/vhosts'    ###
 [ -z "${PHP_VER}"     ] && PHP_VER='lsphp73'            ###
 [ -z "${ALLOWED_SUB}" ] && ALLOWED_SUB='0.0.0.0/0'      ###
-#######################################################№###
+###########################################################
 
 TMP_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 DIR_REM=${TMP_DIR}
