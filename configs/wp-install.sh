@@ -514,7 +514,7 @@ rm latest.tar.gz
 
 fix_perms(){
 	chown -R 33:33 ${VH_ROOT}/${DOMAIN}/
-	${SERVER_DIR}/bin/lswsctrl restart
+	${SERVER_DIR}/bin/lswsctrl restart &>/dev/null
 }
 main(){
 
@@ -523,14 +523,19 @@ main(){
 
                 prin "Wordpress installation..."
                 install_wp
+		fix_perms
                 prin "Adjusting WP config"
 		preinstall_wordpress
+		fix_perms
 		prin "Installing necessary plugins"
 		install_wp_plugin
+		fix_perms
 		prin "Adjusting .htaccess"
 		config_wp_htaccess
+		fix_perms
 	        prin "Adjusting WP litespeed-cache plugin"
 		set_lscache
+		fix_perms
 		prin "Checking perms"
 		fix_perms
 		exit 0
