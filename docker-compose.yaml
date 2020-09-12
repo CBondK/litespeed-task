@@ -1,4 +1,4 @@
-version: '3.7'
+version: '3.8'
 services:
    mysql:
      image: mariadb:10.5.5
@@ -17,8 +17,8 @@ services:
    litespeed-entr-oob:
      build: 
        context: .
-     env_file:
-     - .env
+       args:
+         PHP_VER: ${PHP_VER} 
      ports:
      - 80:80
      - 443:443
@@ -34,5 +34,3 @@ services:
 networks:
   backend:
     driver: bridge
-
-
