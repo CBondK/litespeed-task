@@ -514,7 +514,11 @@ rm latest.tar.gz
 
 fix_perms(){
 	chown -R 33:33 ${VH_ROOT}/${DOMAIN}/
-	${SERVER_DIR}/bin/lswsctrl restart &>/dev/null
+	[ -f ${SERVER_DIR}/conf/trial.key ] && rm -f ${SERVER_DIR}/conf/trial.key
+
+	${SERVER_DIR}/bin/lshttpd -t &>/dev/null
+
+	${SERVER_DIR}/bin/lswsctrl start && ${SERVER_DIR}/bin/lswsctrl restart &>/dev/null
 }
 main(){
 
