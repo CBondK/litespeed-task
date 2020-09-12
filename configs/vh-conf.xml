@@ -41,6 +41,28 @@ WordPressProtect off
       <allow>*</allow>
     </accessControl>
   </security>
+  <extProcessorList>
+    <extProcessor>
+      <type>lsapi</type>
+      <name>PHP_VER</name>
+      <address>uds://tmp/lshttpd/PHP_VER.sock</address>
+      <maxConns>35</maxConns>
+      <env>PHP_LSAPI_CHILDREN=35</env>
+      <initTimeout>60</initTimeout>
+      <retryTimeout>0</retryTimeout>
+      <persistConn>1</persistConn>
+      <respBuffer>0</respBuffer>
+      <autoStart>1</autoStart>
+      <path>$SERVER_ROOT/PHP_VER/bin/lsphp</path>
+      <backlog>100</backlog>
+      <instances>1</instances>
+      <priority>0</priority>
+      <memSoftLimit>2047M</memSoftLimit>
+      <memHardLimit>2047M</memHardLimit>
+      <procSoftLimit>1000</procSoftLimit>
+      <procHardLimit>1000</procHardLimit>
+    </extProcessor>
+  </extProcessorList>
   <contextList>
     <context>
       <type>cgi</type>
@@ -68,4 +90,3 @@ WordPressProtect off
   #   <updateOffset>0</updateOffset>
   # </awstats> -->
 </virtualHostConfig>
-
