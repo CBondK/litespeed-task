@@ -56,7 +56,7 @@ RED='\033[0;31m'
   if [ -z "${ADMIN_USER}" ]  && [ ${ADMIN_PASS} = "dummy_pass" ]; then
     ADMIN_PASS=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 7 | head -n 1)
     echo && echo
-    echo -e "${RED}Since the Admin username and pass were not pre-defined, the random one's generated ---> ${ADMIN_PASS}${NOCOLOR}"
+    echo -e "${RED}Since the Admin username and pass were not pre-defined, the random ones generated ---> admin : ${ADMIN_PASS}${NOCOLOR}"
     reset_details "admin" ${ADMIN_PASS}
 
   elif [ ! -z "${ADMIN_USER}" ] && [ ${ADMIN_PASS} = "dummy_pass" ]; then
