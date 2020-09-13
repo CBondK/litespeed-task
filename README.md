@@ -42,7 +42,7 @@ MYSQL_DATABASE=wordpress       # obligatory
 MYSQL_ROOT_PASSWORD=password   # obligatory
 MYSQL_USER=wordpress           # obligatory
 MYSQL_PASSWORD=password        # obligatory
-PHP_VER=lsphp74                # obligatory
+PHP_VER=lsphp73                # obligatory
 DOMAIN=localhost
 ADMIN_USER=const
 ADMIN_PASS=qwerty1234
@@ -72,9 +72,7 @@ ____Please note that it is obligatory to place the trial.key to the directory wh
 
 ```
 ----> git clone https://github.com/CBondK/litespeed-task.git && cd litespeed-task
-# firsty, please place .env & trial.key to litespeed-task dir 
-----> cd litespeed-task 
-# build args will be picked up automatically by docker-compose
+# it is also needed to place .env & trial.key to litespeed-task dir so that the build args are picked up automatically by docker-compose
 ----> docker-compose up -d
 ```
 
