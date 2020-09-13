@@ -70,7 +70,7 @@ RED='\033[0;31m'
     echo -e "${RED}Admin username -----> ${ADMIN_USER}, Admin Pass (generated automatically) -----> ${ADMIN_PASS}${NOCOLOR}"
     reset_details ${ADMIN_USER} ${ADMIN_PASS}
   elif  [ -z "${ADMIN_USER}" ] && [ ! -z "${ADMIN_PASS}" ]; then
-      if [[ ${ADMIN_PASS} -ge 8 ]]; then
+      if [[ ${ADMIN_PASS} -lt 8 ]]; then
       reset_details "admin" ${ADMIN_PASS}
       echo && echo
       echo -e "${RED}Admin username was set automatically -----> admin, Admin Pass -----> ${ADMIN_PASS}${NOCOLOR}"
