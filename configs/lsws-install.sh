@@ -23,11 +23,12 @@ ${SERVER_DIR}/bin/lswsctrl restart
 configure_lsws_conf(){
   #check input
   if [[ ${PHP_VER} =~ ^lsphp[5-9]{1}[3-9]{1} ]]; then
-  sed -Ei "s|LSAPI_NAME|${PHP_VER}|g" ${TMP_DIR}/httpd_conf.xml
-  sed -Ei "s|DOMAIN|${DOMAIN}|g" ${TMP_DIR}/httpd_conf.xml
-  sed -Ei "s|VH_ROOT|${VH_ROOT}|g" ${TMP_DIR}/httpd_conf.xml
-  sed -Ei "s|LSAPI_NAME|${PHP_VER}|g" ${TMP_DIR}/httpd_conf.xml
-  mv ${TMP_DIR}/httpd_conf.xml  ${SERVER_DIR}/conf/httpd_config.xml
+  	sed -Ei "s|LSAPI_NAME|${PHP_VER}|g" ${TMP_DIR}/httpd_conf.xml
+  	sed -Ei "s|DOMAIN|${DOMAIN}|g" ${TMP_DIR}/httpd_conf.xml
+  	sed -Ei "s|VH_ROOT|${VH_ROOT}|g" ${TMP_DIR}/httpd_conf.xml
+  	mv ${TMP_DIR}/httpd_conf.xml  ${SERVER_DIR}/conf/httpd_config.xml
+  else
+  	echo && echo "The PHP version was specified incorrrectly, exiting" && exit 1
   fi
 }
 
