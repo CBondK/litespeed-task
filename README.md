@@ -42,8 +42,8 @@ MYSQL_DATABASE=wordpress       # obligatory
 MYSQL_ROOT_PASSWORD=password   # obligatory
 MYSQL_USER=wordpress           # obligatory
 MYSQL_PASSWORD=password        # obligatory
+PHP_VER=lsphp74                # obligatory
 DOMAIN=localhost
-PHP_VER=lsphp74
 ADMIN_USER=const
 ADMIN_PASS=qwerty1234
 LSWS_VER=5.0
@@ -52,7 +52,7 @@ LSWS_SUBVER=5.4.9
 
 This will allow extending the available options for deployment and will give us more dynamic provisioning.
 
-In case the optional values are not explicitly set, the default ones will be generated. The default Admin password will be printed during image provisioning.
+In case the optional values are not explicitly set, the default ones will be generated. The default Admin useername and password will be printed during image provisioning.
 
 ____Please note that it is obligatory to place the trial.key to the directory where Dockerfile is located.____
 
@@ -62,9 +62,9 @@ ____Please note that it is obligatory to place the trial.key to the directory wh
 ----> git clone https://github.com/CBondK/litespeed-task.git && cd litespeed-task
 # place .env & trial.key to litespeed-task dir
 ----> source .env
-#Please note that there should be a MySQL server up and running with the correct connection details specified in .env
+# Please note that there should be a MySQL server up and running with the correct connection details specified in .env
 ----> docker build . -t lsws-box:1.5 --build-arg PHP_VER=$PHP_VER
-#If the PHP version is specified in .env, it will be assigned via --build-arg. If not, default "lsphp73" will be used.
+# Specified PHP version will be fetched from .env in this directory
 ----> docker run -d -p 443:443 -p 80:80 -p 8088:8088 -p 7080:7080  lsws-box:1.5
 ```
 
@@ -74,7 +74,7 @@ ____Please note that it is obligatory to place the trial.key to the directory wh
 ----> git clone https://github.com/CBondK/litespeed-task.git && cd litespeed-task
 # firsty, please place .env & trial.key to litespeed-task dir 
 ----> cd litespeed-task 
-# build args will be picked up automatically docker-compose.yaml
+# build args will be picked up automatically by docker-compose
 ----> docker-compose up -d
 ```
 
