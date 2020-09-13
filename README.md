@@ -65,7 +65,7 @@ ____Please note that it is obligatory to place the trial.key to the directory wh
 # Please note that there should be a MySQL server up and running with the correct connection details specified in .env
 ----> docker build . -t lsws-box:1.5 --build-arg PHP_VER=$PHP_VER
 # Specified PHP version will be fetched from .env in this directory
-----> docker run -d -p 443:443 -p 80:80 -p 8088:8088 -p 7080:7080  lsws-box:1.5
+----> docker run -d -p 443:443 -p 80:80 -p 7080:7080  lsws-box:1.5
 ```
 
 #### 2. Complete stack via docker-compose.
